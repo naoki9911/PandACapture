@@ -1,0 +1,10 @@
+github.com/TKMAX777/panda v0.0.0-20220213061446-6b6af0e85e1e h1:s0g68bCqiwrTV2i+QrdTmMNnVAYFKKB6kKYNUQMjEPY=
+github.com/TKMAX777/panda v0.0.0-20220213061446-6b6af0e85e1e/go.mod h1:FQAL4mTFtRcdz+CutGbTksQbJMEhIDQJEFkKcDh9SEk=
+github.com/jessevdk/go-flags v1.5.0 h1:1jKYvbxEjfUl0fmqTCOfonvskHHXMjBySTLW4y9LFvc=
+github.com/jessevdk/go-flags v1.5.0/go.mod h1:Fw0T6WPc1dYxT4mKEZRfG5kJhaTDP9pj1c2EWnYs/m4=
+github.com/naoki9911/panda v0.0.0-20220326050346-ad151debfef3 h1:QLsQ+/63nJxpb+5Uey2vAB5IdQPeaEWCfPBdcrLjs30=
+github.com/naoki9911/panda v0.0.0-20220326050346-ad151debfef3/go.mod h1:UIVJnovDAKizQ2A1wO14lHuIu1pKbiQwrHP9B0lN6A4=
+github.com/ssoroka/slice v0.0.0-20211028135151-81d3a5de7c11 h1:IzvRIvbJfUlyRhuWd0hGWCQkkRlkDLjRipckMbvCGoQ=
+github.com/ssoroka/slice v0.0.0-20211028135151-81d3a5de7c11/go.mod h1:l4Ov7Zo7X3/MCC+pefg/lN7x8X8FKb1Ub7oxosKKJa0=
+golang.org/x/sys v0.0.0-20210320140829-1e4c9ba3b0c4 h1:EZ2mChiOa8udjfp6rRmswTbtZN/QzUQp4ptM4rnjHvc=
+golang.org/x/sys v0.0.0-20210320140829-1e4c9ba3b0c4/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
