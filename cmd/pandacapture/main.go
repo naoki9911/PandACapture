@@ -6,6 +6,7 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/jessevdk/go-flags"
 	"github.com/naoki9911/panda"
@@ -129,12 +130,15 @@ func (c *Content) download(h *panda.Handler, downloadDir string) error {
 	return nil
 }
 
-func (site *Site) download(h *panda.Handler, downloadDir string) error {
+func (site *Site) download(h *panda.Handler, downloadDir string, sleepDur time.Duration) error {
 	for _, file := range site.files {
 		err := file.download(h, downloadDir)
 		if err != nil {
 			fmt.Printf("failed to download %s\n", file.filePath)
 		}
+
+		// Sleep for avoiding DoS attack
+		time.Sleep(sleepDur)
 	}
 	return nil
 }
@@ -147,6 +151,7 @@ var opts struct {
 
 func main() {
 	favorite := false
+	sleepDur := 1 * time.Second
 
 	_, err := flags.Parse(&opts)
 	if err != nil {
@@ -186,7 +191,7 @@ func main() {
 			continue
 		}
 
-		err = site.download(h, opts.DownloadPath)
+		err = site.download(h, opts.DownloadPath, sleepDur)
 		if err != nil {
 			panic(err)
 		}
