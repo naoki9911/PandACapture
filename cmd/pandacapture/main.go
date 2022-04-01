@@ -199,9 +199,6 @@ func main() {
 	for _, siteID := range sites {
 		site, err := getSite(h, siteID)
 		if err != nil {
-			panic(err)
-		}
-		if err != nil {
 			fmt.Println(site)
 			continue
 		}
