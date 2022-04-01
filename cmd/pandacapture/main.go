@@ -146,6 +146,8 @@ var opts struct {
 }
 
 func main() {
+	favorite := false
+
 	_, err := flags.Parse(&opts)
 	if err != nil {
 		os.Exit(1)
@@ -158,9 +160,21 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	sites := h.GetFavoriteSites()
 
-	for i, siteID := range sites.FavoriteSitesIDs {
+	sites := []string{}
+	if favorite {
+		resp := h.GetFavoriteSites()
+		for _, s := range resp.FavoriteSitesIDs {
+			sites = append(sites, s)
+		}
+	} else {
+		resp := h.GetAllSites()
+		for _, s := range resp.SiteCollection {
+			sites = append(sites, s.Id)
+		}
+	}
+
+	for i, siteID := range sites {
 		fmt.Println(i)
 		site, err := getSite(h, siteID)
 		if err != nil {
