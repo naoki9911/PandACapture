@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"path"
@@ -8,7 +9,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jessevdk/go-flags"
 	"github.com/naoki9911/panda"
 	"github.com/ssoroka/slice"
 )
@@ -142,31 +142,49 @@ func (site *Site) download(h *panda.Handler, downloadDir string, sleepDur time.D
 	return nil
 }
 
-var opts struct {
-	ECSID        string `short:"i" long:"ecs-id" description:"ECS-ID to login" required:"true"`
-	Password     string `short:"p" long:"password" description:"Password to login" required:"true"`
-	DownloadPath string `short:"o" long:"output" description:"Path to download" default:"downloads"`
+func printUsage() {
+	fmt.Fprintf(os.Stderr, "Usage: %s [-output DIR] [-favorite] [-sleep SECONDS] ECS-ID PASSWORD\n", os.Args[0])
+	fmt.Fprintf(os.Stderr, "  -favorite\n")
+	fmt.Fprintf(os.Stderr, "  	If true, only files marked 'favorite' are downloaded\n")
+	fmt.Fprintf(os.Stderr, "  -output string\n")
+	fmt.Fprintf(os.Stderr, "  	Path to store downloaded files (default \"downloads\")\n")
+	fmt.Fprintf(os.Stderr, "  -sleep float\n")
+	fmt.Fprintf(os.Stderr, "  	Durtaion (second) to sleep after downloading each file (default 1)\n")
 }
 
 func main() {
-	favorite := false
-	sleepDur := 1 * time.Second
+	var err error
 
-	_, err := flags.Parse(&opts)
-	if err != nil {
+	// Parse command-line arguments
+	var (
+		downloadPathOpt   = flag.String("output", "downloads", "")
+		onlyFavoriteOpt   = flag.Bool("favorite", false, "")
+		sleepDurSecondOpt = flag.Float64("sleep", 1, "")
+	)
+	flag.Usage = printUsage
+	flag.Parse()
+	if flag.NArg() != 2 {
+		printUsage()
 		os.Exit(1)
 	}
+	ecsId := flag.Arg(0)
+	ecsPassword := flag.Arg(1)
+	downloadPath := *downloadPathOpt
+	onlyFavorite := *onlyFavoriteOpt
+	sleepDur := time.Duration(*sleepDurSecondOpt * float64(time.Second))
 
-	fmt.Printf("DownloadPath: %s\n", opts.DownloadPath)
+	fmt.Printf("Downloaded files will be stored in: %s\n", downloadPath)
 
+	// Create the client
 	h := panda.NewClient()
-	err = h.Login(opts.ECSID, opts.Password)
+	err = h.Login(ecsId, ecsPassword)
 	if err != nil {
 		panic(err)
 	}
 
+	// Download the files
 	sites := []string{}
-	if favorite {
+	if onlyFavorite {
 		resp := h.GetFavoriteSites()
 		for _, s := range resp.FavoriteSitesIDs {
 			sites = append(sites, s)
@@ -188,7 +206,7 @@ func main() {
 			continue
 		}
 
-		err = site.download(h, opts.DownloadPath, sleepDur)
+		err = site.download(h, downloadPath, sleepDur)
 		if err != nil {
 			panic(err)
 		}
