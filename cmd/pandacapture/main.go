@@ -90,7 +90,6 @@ func getSite(handler *panda.Handler, siteID string) (*Site, error) {
 			fileURL:  content.URL,
 		}
 		if filepath.Ext(c.fileName) == "" {
-			fmt.Println("HOGEHOGE")
 			ext, _ := slice.Last(strings.Split(c.fileURL, "."))
 			c.fileName = c.fileName + "." + ext
 		}
@@ -179,13 +178,11 @@ func main() {
 		}
 	}
 
-	for i, siteID := range sites {
-		fmt.Println(i)
+	for _, siteID := range sites {
 		site, err := getSite(h, siteID)
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println(site)
 		if err != nil {
 			fmt.Println(site)
 			continue
