@@ -154,7 +154,7 @@ func main() {
 	fmt.Printf("DownloadPath: %s\n", opts.DownloadPath)
 
 	h := panda.NewClient()
-	err = h.Login(ECS_ID, PASSWORD)
+	err = h.Login(opts.ECSID, opts.Password)
 	if err != nil {
 		panic(err)
 	}
@@ -163,6 +163,9 @@ func main() {
 	for i, siteID := range sites.FavoriteSitesIDs {
 		fmt.Println(i)
 		site, err := getSite(h, siteID)
+		if err != nil {
+			panic(err)
+		}
 		fmt.Println(site)
 		if err != nil {
 			fmt.Println(site)
